@@ -13,6 +13,7 @@ import {
   LogOut,
 } from "lucide-react";
 import { ProfileSlidePanel } from "@/components/profile/ProfileSlidePanel";
+import { SwipeNavigator } from "@/components/navigation/SwipeNavigator";
 import { cn } from "@/lib/utils";
 
 interface LayoutClientProps {
@@ -161,15 +162,31 @@ export function LayoutClient({ children, user, household }: LayoutClientProps) {
 
       {/* Main Content */}
       <main className="lg:pl-64 pt-16 lg:pt-0 pb-24 lg:pb-0">
-        <div className="p-4 lg:p-8 max-w-7xl mx-auto animate-fade-in">
-          {children}
-        </div>
+        <SwipeNavigator>
+          <div className="p-4 lg:p-8 max-w-7xl mx-auto">
+            {children}
+          </div>
+        </SwipeNavigator>
       </main>
 
       {/* Mobile Bottom Navigation - SOLID background */}
       <nav className="lg:hidden fixed bottom-0 left-0 right-0 z-50 bg-card border-t border-border pb-safe">
+        {/* Swipe indicator dots */}
+        <div className="flex justify-center gap-1.5 pt-2 pb-1">
+          {navigation.map((_, index) => (
+            <div
+              key={index}
+              className={cn(
+                "h-1 rounded-full transition-all duration-200",
+                index === currentIndex
+                  ? "bg-primary w-6"
+                  : "bg-muted-foreground/20 w-1.5"
+              )}
+            />
+          ))}
+        </div>
         {/* Tab navigation */}
-        <div className="flex items-center justify-around py-3 pb-4">
+        <div className="flex items-center justify-around py-2 pb-3">
           {navigation.map((item) => {
             const isActive = pathname.startsWith(item.href);
             return (
